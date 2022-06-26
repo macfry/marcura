@@ -1,0 +1,28 @@
+<div class="flex-table row" role="rowgroup" *ngIf="costItem">
+  <div class="flex-row first text-left" role="cell">{{ costItem.name }}</div>
+  <div class="flex-row text-left" role="cell">{{ costItem.costItemAlias.accountingCode }}</div>
+
+  <ng-container *ngFor="let item of costItem.costs; index as i">
+    <div class="flex-row text-right" role="cell" *ngIf="item.type === 'Quoted'">
+      <div>{{ currency }} <span class="bigger-number">{{ convert(item.amount) }}</span></div>
+      <div>USD {{ convert(item.amount, true) }}</div>
+    </div>
+
+    <div class="flex-row text-right" role="cell" *ngIf="item.type === 'Screened'">
+      <div>{{ currency }} <span class="bigger-number">{{ convert(item.amount) }}</span></div>
+      <div>USD {{ convert(item.amount, true) }}</div>
+    </div>
+  </ng-container>
+
+  <div class="flex-row" role="cell"><button class="comment-icon" (click)="toggleShow()">comment {{ costItem?.comments?.length }}</button></div>
+
+
+  <div class="flex-comments" *ngIf="isShown">
+    <ng-container *ngFor="let coment of costItem.comments; index as i">
+      <span>{{ coment.type }}</span>
+      <span>{{ coment.comment }}</span>
+      <span>{{ coment.author }}</span>
+      <span>{{ coment.date }}</span>
+    </ng-container>
+  </div>
+</div>

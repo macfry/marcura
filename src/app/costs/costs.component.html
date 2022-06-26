@@ -1,0 +1,32 @@
+<ng-container *ngIf="response">
+  <app-currency-selector (selectCurrency)='changeCurrencyExchangeRate($event)' [selected]="response.daCurrency.currency"></app-currency-selector>
+
+
+  <ng-container *ngFor="let cost of response.costs; index as i">
+    <div class="table-container" role="table" aria-label="Costs">
+      <div class="flex-table header" role="rowgroup">
+        <div class="flex-row first text-left" role="columnheader">{{ cost.name }}</div>
+        <div class="flex-row text-left" role="columnheader">Account code</div>
+        <div class="flex-row text-right" role="columnheader">Quoted</div>
+        <div class="flex-row text-right" role="columnheader">Screened</div>
+        <div class="flex-row" role="columnheader"></div>
+      </div>
+
+      <ng-container *ngFor="let costItem of cost.costItems; index as i">
+        <app-cost [costItem]="costItem" [baseRate]="baseExchangeRate" [exchangeRate]="currencyExchangeRate" [currency]="currency"></app-cost>
+      </ng-container>
+
+      <div class="flex-table row total" role="rowgroup">
+        <div class="flex-row first col-span text-left" role="cell">Total</div>
+        <div class="flex-row text-right" role="cell">
+          <div>{{ currency }} <span class="bigger-number">{{ total(cost.costItems, 'Quoted', currencyExchangeRate) }}</span></div>
+          <div>USD {{ total(cost.costItems, 'Quoted', baseExchangeRate) }}</div>
+        </div>
+        <div class="flex-row text-right" role="cell">
+          <div>{{ currency }} <span class="bigger-number">{{ total(cost.costItems, 'Screened', currencyExchangeRate) }}</span></div>
+          <div>USD {{ total(cost.costItems, 'Screened', baseExchangeRate) }}</div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
